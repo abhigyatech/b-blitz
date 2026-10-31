@@ -29,11 +29,21 @@
       }
     }
   </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
 
-<body class="bg-brandBg text-brandDark min-h-screen flex flex-col justify-between sm:p-4 select-none font-sans">
+<body class="bg-brandBg text-brandDark min-h-screen flex flex-col justify-between p-4 sm:p-6 select-none font-sans">
 
-  <header class="w-full mx-auto flex justify-start items-center">
+  <header class="w-full mx-auto flex justify-start items-center px-2">
     <img src="./blitz.png" alt="BrokersBlitz Logo" class="h-16 sm:h-20 w-auto object-contain" />
   </header>
 
@@ -67,13 +77,14 @@
       </span>
     </h2>
 
-    <p class="text-brandDark/80 text-base sm:text-lg max-w-xl font-normal leading-relaxed mb-10">
+    <p class="text-brandDark/80 text-base sm:text-lg max-w-xl font-normal leading-relaxed mb-10 px-4 sm:px-0">
       The AI-powered platform for real estate brokers to showcase properties, match buyers instantly, and deal faster.
     </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-3xl text-left">
+    <div id="cardContainer"
+      class="flex sm:grid sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl text-left overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory px-4 sm:px-0 py-2">
       <div
-        class="bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        class="min-w-[85%] sm:min-w-0 snap-center bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex-shrink-0 sm:flex-shrink">
         <div
           class="w-8 h-8 rounded-lg bg-brandOrange/10 flex items-center justify-center text-brandOrange font-bold mb-3">
           ✦
@@ -83,7 +94,7 @@
       </div>
 
       <div
-        class="bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        class="min-w-[85%] sm:min-w-0 snap-center bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex-shrink-0 sm:flex-shrink">
         <div
           class="w-8 h-8 rounded-lg bg-brandOrange/10 flex items-center justify-center text-brandOrange font-bold mb-3">
           ⚡
@@ -93,7 +104,7 @@
       </div>
 
       <div
-        class="bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+        class="min-w-[85%] sm:min-w-0 snap-center bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex-shrink-0 sm:flex-shrink">
         <div
           class="w-8 h-8 rounded-lg bg-brandOrange/10 flex items-center justify-center text-brandOrange font-bold mb-3">
           🚀
@@ -105,7 +116,7 @@
   </main>
 
   <footer
-    class="w-full mx-auto flex flex-col sm:flex-row justify-between items-center text-xs text-brandDark/60 py-4 px-2 gap-2 border-t border-brandDark/10">
+    class="w-full mx-auto flex flex-col sm:flex-row justify-between items-center text-xs text-brandDark/60 py-4 px-4 gap-2 border-t border-brandDark/10">
     <div class="flex items-center gap-1.5">
       <span>www.brokersblitz.in</span>
       <span>•</span>
@@ -117,6 +128,41 @@
       <script>document.write(new Date().getFullYear())</script> BrokersBlitz. All rights reserved.
     </div>
   </footer>
+
+  <script>
+    const container = document.getElementById('cardContainer');
+    let autoScrollTimer = null;
+
+    function startAutoScroll() {
+      if (window.innerWidth >= 640) return;
+      autoScrollTimer = setInterval(() => {
+        if (!container) return;
+        const cardWidth = container.firstElementChild.offsetWidth + 16;
+        if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+          container.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+        }
+      }, 3000);
+    }
+
+    function stopAutoScroll() {
+      if (autoScrollTimer) clearInterval(autoScrollTimer);
+    }
+
+    startAutoScroll();
+
+    container.addEventListener('touchstart', stopAutoScroll, { passive: true });
+    container.addEventListener('touchend', () => {
+      stopAutoScroll();
+      startAutoScroll();
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      stopAutoScroll();
+      startAutoScroll();
+    });
+  </script>
 
 </body>
 
