@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>B-Blitz | Coming Soon</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between items-center p-6 select-none">
+  
+  <!-- Header / Logo -->
+  <header class="w-full max-w-5xl flex justify-between items-center py-4">
+    <div class="text-2xl font-extrabold tracking-wider text-indigo-500">
+      B-BLITZ
+    </div>
+    <span class="text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium">
+      Under Construction
+    </span>
+  </header>
+
+  <!-- Main Hero Section -->
+  <main class="w-full max-w-2xl text-center my-auto py-12 flex flex-col items-center">
+    <!-- Glowing Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-sm text-slate-300 mb-8 shadow-inner">
+      <span class="flex h-2 w-2 relative">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+      </span>
+      Something exciting is on the way
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-6 leading-tight">
+      We are launching <br />
+      <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+        Very Soon
+      </span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-slate-400 text-base sm:text-lg mb-8 max-w-lg leading-relaxed">
+      We are working hard to build an incredible experience. Sign up below to get notified when we officially go live!
+    </p>
+
+    <!-- Email Subscription Form -->
+    <form onsubmit="event.preventDefault(); alert('Thank you for subscribing!');" class="w-full max-w-md flex flex-col sm:flex-row gap-3">
+      <input 
+        type="email" 
+        required 
+        placeholder="Enter your email address..." 
+        class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+      />
+      <button 
+        type="submit" 
+        class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-lg shadow-indigo-600/30 transition duration-200 whitespace-nowrap"
+      >
+        Notify Me
+      </button>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-5xl text-center text-xs text-slate-500 py-4">
+    &copy; <script>document.write(new Date().getFullYear())</script> B-Blitz. All rights reserved.
+  </footer>
+
+</body>
+</html>
