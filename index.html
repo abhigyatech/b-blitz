@@ -1,35 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>BrokersBlitz | Turn Listings Into Closings</title>
+  <meta name="description"
+    content="The AI-powered platform for real estate brokers to showcase properties, match buyers instantly, and close deals faster." />
+  <meta name="theme-color" content="#F4F0EA" />
   <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          screens: {
+            'xs': '480px',
+            '3xl': '1600px',
+          },
           colors: {
             brandBg: '#F4F0EA',
-            brandOrange: '#DF6400',
+            brandOrange: {
+              DEFAULT: '#DF6400',
+              hover: '#C75700',
+              light: '#FBF0E6',
+              glow: 'rgba(223, 100, 0, 0.18)',
+            },
             brandDark: '#1A1A1A',
+            brandMuted: '#5C5852',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
           },
           keyframes: {
             roll360: {
               '0%': { transform: 'rotateX(0deg)' },
-              '40%, 100%': { transform: 'rotateX(360deg)' },
+              '45%, 100%': { transform: 'rotateX(360deg)' },
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: 1 },
+              '50%': { opacity: 0.6 },
             }
           },
           animation: {
-            roll: 'roll360 3s cubic-bezier(0.4, 0, 0.2, 1) infinite',
+            roll: 'roll360 4.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite',
+            pulseSubtle: 'pulseSubtle 2.5s ease-in-out infinite',
+          },
+          boxShadow: {
+            subtle: '0 2px 10px -2px rgba(26, 26, 26, 0.05), 0 1px 3px -1px rgba(26, 26, 26, 0.03)',
+            card: '0 8px 30px -4px rgba(26, 26, 26, 0.06), 0 2px 6px -1px rgba(26, 26, 26, 0.02)',
+            cardHover: '0 20px 40px -10px rgba(223, 100, 0, 0.16), 0 4px 12px -2px rgba(26, 26, 26, 0.04)',
+            orangeGlow: '0 0 35px -5px rgba(223, 100, 0, 0.35)',
           }
         }
       }
     }
   </script>
+
   <style>
+    /* Custom scrollbar hiding */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -38,130 +76,347 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* Ambient background grid spanning full screen */
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(26, 26, 26, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(26, 26, 26, 0.035) 1px, transparent 1px);
+    }
+
+    /* Subtle text selection */
+    ::selection {
+      background-color: #DF6400;
+      color: #FFFFFF;
+    }
+
+    /* Guardrail for low height screens to preserve perfect viewport fit */
+    @media (max-height: 680px) {
+      .compact-hide {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 
-<body class="bg-brandBg text-brandDark min-h-screen flex flex-col justify-between p-4 sm:p-6 select-none font-sans">
+<body
+  class="bg-brandBg text-brandDark h-[100dvh] max-h-[100dvh] overflow-hidden flex flex-col justify-between font-sans relative antialiased bg-grid-pattern selection:bg-brandOrange selection:text-white">
 
-  <header class="w-full mx-auto flex justify-start items-center px-2">
-    <img src="./blitz.png" alt="BrokersBlitz Logo" class="h-16 sm:h-20 w-auto object-contain" />
+  <!-- Ambient Glow Overlays (Wide Screen Dispersion) -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden -z-10" aria-hidden="true">
+    <div
+      class="absolute -top-32 left-1/2 -translate-x-1/2 w-[80vw] max-w-[1100px] h-[450px] bg-gradient-to-b from-brandOrange/15 to-transparent rounded-full blur-3xl opacity-75">
+    </div>
+    <div
+      class="absolute top-1/4 -left-32 w-[35vw] max-w-[500px] h-[35vw] max-h-[500px] bg-brandOrange/10 rounded-full blur-3xl opacity-60">
+    </div>
+    <div
+      class="absolute top-1/2 -right-32 w-[35vw] max-w-[500px] h-[35vw] max-h-[500px] bg-brandOrange/10 rounded-full blur-3xl opacity-50">
+    </div>
+  </div>
+
+  <!-- Header (Full Screen Width) -->
+  <header class="w-full px-5 sm:px-10 lg:px-16 pt-4 sm:pt-6 pb-2 flex justify-between items-center z-10 flex-shrink-0">
+    <a href="/"
+      class="group inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brandOrange rounded-lg p-1 transition-transform hover:scale-[1.02]">
+      <img src="./blitz.png" alt="BrokersBlitz Logo"
+        class="h-10 sm:h-12 md:h-14 w-auto object-contain transition-opacity duration-200" />
+    </a>
   </header>
 
-  <main class="w-full max-w-4xl mx-auto text-center my-auto py-8 flex flex-col items-center">
+  <!-- Main Hero Content (Full Width Spanning Layout) -->
+  <main
+    class="w-full px-4 sm:px-8 lg:px-14 xl:px-20 flex-1 flex flex-col justify-center items-center text-center z-10 min-h-0 py-2 sm:py-3">
 
-    <div class="[perspective:1000px] mb-6">
+    <!-- Coming Soon 3D Pill -->
+    <div class="[perspective:1000px] mb-3 sm:mb-4 flex-shrink-0">
       <div
-        class="bg-brandOrange text-white font-black text-xs sm:text-sm tracking-widest uppercase px-6 py-2 rounded-md shadow-md inline-block animate-roll origin-center [transform-style:preserve-3d]">
-        COMING SOON
+        class="inline-flex items-center gap-2 bg-brandOrange text-white font-extrabold text-[11px] sm:text-xs tracking-[0.2em] uppercase px-5 py-2 rounded-full shadow-card hover:shadow-orangeGlow transition-shadow duration-300 animate-roll origin-center [transform-style:preserve-3d]">
+        <svg class="w-3.5 h-3.5 animate-spin text-white/90" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+          </path>
+        </svg>
+        <span>Coming Soon</span>
       </div>
     </div>
 
+    <!-- Announcement Tagline -->
     <div
-      class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 border border-brandDark/10 text-xs sm:text-sm text-brandDark/80 font-medium mb-8 shadow-sm">
-      <span class="flex h-2 w-2 relative">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandOrange opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-brandOrange"></span>
-      </span>
-      We're crafting something exciting for you
+      class="compact-hide inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-brandDark/10 text-xs sm:text-sm text-brandDark font-medium mb-3 sm:mb-5 shadow-subtle flex-shrink-0">
+      <span
+        class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-brandOrange/15 text-brandOrange text-[11px]">✨</span>
+      <span>We're crafting the future of real estate brokerage</span>
     </div>
 
-    <h1 class="text-4xl sm:text-6xl md:text-7xl font-light tracking-tight text-brandDark uppercase leading-none mb-4">
-      Turn Listings
-    </h1>
-    <h2
-      class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-brandDark uppercase leading-none relative mb-8">
-      Into <span class="relative inline-block text-brandDark">
-        Closings
-        <span
-          class="absolute bottom-1 left-0 w-full h-3 sm:h-4 bg-brandOrange -z-10 rounded-sm transform -rotate-1"></span>
-      </span>
-    </h2>
+    <!-- Expansive Main Title Spanning Across Screen -->
+    <div class="w-full max-w-6xl mx-auto flex-shrink-0 mb-3 sm:mb-4">
+      <h1
+        class="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 3xl:text-9xl font-light tracking-tight text-brandDark uppercase leading-[1.0] mb-1 sm:mb-2">
+        Turn Listings
+      </h1>
+      <h2
+        class="text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-9xl 3xl:text-[10rem] font-black tracking-tight text-brandDark uppercase leading-[1.0] relative">
+        Into
+        <span class="relative inline-block text-brandDark">
+          <span class="relative z-10">Closings</span>
+          <span
+            class="absolute bottom-1 sm:bottom-2 left-0 w-full h-3 sm:h-5 bg-brandOrange/30 -z-0 rounded-sm transform -rotate-1"></span>
+          <span
+            class="absolute bottom-0.5 sm:bottom-1 left-0 w-full h-1.5 sm:h-2.5 bg-brandOrange rounded-sm transform -rotate-1"></span>
+        </span>
+      </h2>
+    </div>
 
-    <p class="text-brandDark/80 text-base sm:text-lg max-w-xl font-normal leading-relaxed mb-10 px-4 sm:px-0">
-      The AI-powered platform for real estate brokers to showcase properties, match buyers instantly, and deal faster.
+    <!-- Subtitle / Value Proposition (Generous Reading Width) -->
+    <p
+      class="text-brandMuted text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl max-w-3xl font-normal leading-relaxed mb-5 sm:mb-7 px-4 flex-shrink-0">
+      The AI-powered platform for real estate brokers to showcase properties, match buyers instantly, and close deals
+      faster.
     </p>
 
-    <div id="cardContainer"
-      class="flex sm:grid sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl text-left overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory px-6 sm:px-0 py-2">
-      <div
-        class="min-w-[82%] sm:min-w-0 snap-center bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex-shrink-0 sm:flex-shrink">
+    <!-- Full-Width 3-Column Feature Cards Grid -->
+    <div class="w-full max-w-7xl mx-auto flex-shrink-0">
+      <div id="cardContainer"
+        class="flex md:grid md:grid-cols-3 gap-3.5 sm:gap-5 lg:gap-6 w-full text-left overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory px-4 md:px-0 py-1">
+        <!-- Card 1 -->
         <div
-          class="w-8 h-8 rounded-lg bg-brandOrange/10 flex items-center justify-center text-brandOrange font-bold mb-3">
-          ✦
+          class="min-w-[85%] xs:min-w-[75%] md:min-w-0 snap-center bg-white/80 backdrop-blur-md p-4 sm:p-5 lg:p-6 rounded-2xl border border-brandDark/10 shadow-subtle hover:shadow-cardHover hover:border-brandOrange/30 hover:-translate-y-1 transition-all duration-300 flex-shrink-0 md:flex-shrink group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brandOrange/10 border border-brandOrange/15 flex items-center justify-center text-brandOrange group-hover:bg-brandOrange group-hover:text-white transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <span
+                class="text-[10px] font-bold text-brandOrange bg-brandOrange/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Sync</span>
+            </div>
+            <h3 class="text-brandDark font-bold text-base sm:text-lg tracking-tight mb-1 sm:mb-1.5">Smart Listings</h3>
+            <p class="text-xs sm:text-sm text-brandDark/70 leading-relaxed">
+              Showcase and manage high-value property portfolios in one intelligent, synchronized hub.
+            </p>
+          </div>
         </div>
-        <div class="text-brandDark font-bold text-base mb-1">Smart Listings</div>
-        <p class="text-xs text-brandDark/70 leading-relaxed">Showcase and manage property portfolios effortlessly.</p>
+
+        <!-- Card 2 -->
+        <div
+          class="min-w-[85%] xs:min-w-[75%] md:min-w-0 snap-center bg-white/80 backdrop-blur-md p-4 sm:p-5 lg:p-6 rounded-2xl border border-brandDark/10 shadow-subtle hover:shadow-cardHover hover:border-brandOrange/30 hover:-translate-y-1 transition-all duration-300 flex-shrink-0 md:flex-shrink group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brandOrange/10 border border-brandOrange/15 flex items-center justify-center text-brandOrange group-hover:bg-brandOrange group-hover:text-white transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <span
+                class="text-[10px] font-bold text-brandOrange bg-brandOrange/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Instant</span>
+            </div>
+            <h3 class="text-brandDark font-bold text-base sm:text-lg tracking-tight mb-1 sm:mb-1.5">AI Lead Matching
+            </h3>
+            <p class="text-xs sm:text-sm text-brandDark/70 leading-relaxed">
+              Connect high-intent buyers with ideal properties with lightning-fast predictive matching algorithms.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div
+          class="min-w-[85%] xs:min-w-[75%] md:min-w-0 snap-center bg-white/80 backdrop-blur-md p-4 sm:p-5 lg:p-6 rounded-2xl border border-brandDark/10 shadow-subtle hover:shadow-cardHover hover:border-brandOrange/30 hover:-translate-y-1 transition-all duration-300 flex-shrink-0 md:flex-shrink group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-brandOrange/10 border border-brandOrange/15 flex items-center justify-center text-brandOrange group-hover:bg-brandOrange group-hover:text-white transition-colors duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <span
+                class="text-[10px] font-bold text-brandOrange bg-brandOrange/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Automated</span>
+            </div>
+            <h3 class="text-brandDark font-bold text-base sm:text-lg tracking-tight mb-1 sm:mb-1.5">Faster Deals</h3>
+            <p class="text-xs sm:text-sm text-brandDark/70 leading-relaxed">
+              Eliminate pipeline friction with verified deal acceleration tools designed to scale brokerage revenue.
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div
-        class="min-w-[82%] sm:min-w-0 snap-center bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex-shrink-0 sm:flex-shrink">
-        <div
-          class="w-8 h-8 rounded-lg bg-brandOrange/10 flex items-center justify-center text-brandOrange font-bold mb-3">
-          ⚡
-        </div>
-        <div class="text-brandDark font-bold text-base mb-1">AI Lead Matching</div>
-        <p class="text-xs text-brandDark/70 leading-relaxed">Connect buyers to right properties in seconds.</p>
-      </div>
-
-      <div
-        class="min-w-[82%] sm:min-w-0 snap-center bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-brandDark/10 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex-shrink-0 sm:flex-shrink">
-        <div
-          class="w-8 h-8 rounded-lg bg-brandOrange/10 flex items-center justify-center text-brandOrange font-bold mb-3">
-          🚀
-        </div>
-        <div class="text-brandDark font-bold text-base mb-1">Faster Deals</div>
-        <p class="text-xs text-brandDark/70 leading-relaxed">Intelligent tools designed to scale your brokerage.</p>
+      <!-- Mobile Pagination Indicator Dots -->
+      <div id="dotIndicators" class="flex md:hidden justify-center items-center gap-1.5 mt-2.5" aria-hidden="true">
+        <span class="dot w-4 h-1.5 rounded-full bg-brandOrange transition-all duration-300"></span>
+        <span class="dot w-1.5 h-1.5 rounded-full bg-brandDark/20 transition-all duration-300"></span>
+        <span class="dot w-1.5 h-1.5 rounded-full bg-brandDark/20 transition-all duration-300"></span>
       </div>
     </div>
+
   </main>
 
+  <!-- Footer (Full Screen Width) -->
   <footer
-    class="w-full mx-auto flex flex-col sm:flex-row justify-between items-center text-xs text-brandDark/60 py-4 px-4 gap-2 border-t border-brandDark/10">
-    <div class="flex items-center gap-1.5">
-      <span>www.brokersblitz.in</span>
-      <span>•</span>
-      <span class="text-brandDark/50">by <a href="https://abhigyatech.in/" target="_blank" rel="noopener noreferrer"
-          class="hover:text-brandDark transition-colors">Abhigya Tech</a></span>
+    class="w-full px-5 sm:px-10 lg:px-16 py-3 sm:py-4 flex flex-col sm:flex-row justify-between items-center text-xs text-brandDark/70 gap-2.5 border-t border-brandDark/10 z-10 backdrop-blur-sm flex-shrink-0">
+    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+      <a href="https://www.brokersblitz.in"
+        class="font-medium hover:text-brandOrange transition-colors">www.brokersblitz.in</a>
+      <span class="text-brandDark/30">•</span>
+      <span class="text-brandDark/60">by <a href="https://abhigyatech.in/" target="_blank" rel="noopener noreferrer"
+          class="font-medium hover:text-brandDark underline underline-offset-2 transition-colors">Abhigya
+          Tech</a></span>
     </div>
-    <div>
-      &copy;
-      <script>document.write(new Date().getFullYear())</script> BrokersBlitz. All rights reserved.
+
+    <div class="flex items-center gap-2 text-center sm:text-right text-brandDark/60 font-medium">
+      <span>&copy; <span id="currentYear"></span> BrokersBlitz. All rights reserved.</span>
+      <span class="text-brandDark/25 font-mono text-[10px] select-none cursor-default" title="Unique Visitors">
+        • uv:<span id="visitorCountDisplay">—</span>
+      </span>
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script>
+    // Set dynamic copyright year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // ==========================================
+    // DISCREET UNIQUE VISITOR TRACKER (AUTHENTIC COUNT)
+    // ==========================================
+    (async function initUniqueVisitorCounter() {
+      const display = document.getElementById('visitorCountDisplay');
+      if (!display) return;
+
+      // Purge legacy test keys saved during previous runs
+      try {
+        localStorage.removeItem('bb_cached_visitor_count');
+        localStorage.removeItem('bb_has_visited_v1');
+      } catch (e) { }
+
+      const NAMESPACE = 'brokersblitz_prod';
+      const KEY = 'unique_visits';
+      const VISITED_KEY = 'bb_uv_verified';
+      const REAL_COUNT_KEY = 'bb_uv_real_count';
+
+      // Check if running on localhost/file vs live production domain
+      const isLocal = window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.protocol === 'file:';
+
+      const isUniqueVisitor = !localStorage.getItem(VISITED_KEY);
+
+      try {
+        // In local development, only read or start at 0; don't inflate live count
+        const endpoint = (isUniqueVisitor && !isLocal)
+          ? `https://api.counterapi.dev/v1/${NAMESPACE}/${KEY}/up`
+          : `https://api.counterapi.dev/v1/${NAMESPACE}/${KEY}`;
+
+        const res = await fetch(endpoint, { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && typeof data.count !== 'undefined') {
+            display.textContent = data.count;
+            localStorage.setItem(REAL_COUNT_KEY, data.count);
+            if (isUniqueVisitor && !isLocal) {
+              localStorage.setItem(VISITED_KEY, new Date().toISOString());
+            }
+            window.bbUniqueVisitors = data.count;
+            return;
+          }
+        }
+      } catch (err) {
+        // Silent
+      }
+
+      // If offline or local initial run
+      const cached = localStorage.getItem(REAL_COUNT_KEY);
+      display.textContent = cached || (isLocal ? '0' : '—');
+      window.bbUniqueVisitors = cached || 0;
+    })();
+
+    // ==========================================
+    // MOBILE CAROUSEL & TOUCH CONTROLS
+    // ==========================================
     const container = document.getElementById('cardContainer');
+    const dots = document.querySelectorAll('#dotIndicators .dot');
     let autoScrollTimer = null;
+    let isUserInteracting = false;
+
+    function updateActiveDot() {
+      if (!container || !dots.length || window.innerWidth >= 768) return;
+      const scrollPosition = container.scrollLeft;
+      const cardWidth = container.firstElementChild.offsetWidth;
+      const activeIndex = Math.min(
+        Math.round(scrollPosition / cardWidth),
+        dots.length - 1
+      );
+
+      dots.forEach((dot, index) => {
+        if (index === activeIndex) {
+          dot.classList.remove('w-1.5', 'bg-brandDark/20');
+          dot.classList.add('w-4', 'bg-brandOrange');
+        } else {
+          dot.classList.remove('w-4', 'bg-brandOrange');
+          dot.classList.add('w-1.5', 'bg-brandDark/20');
+        }
+      });
+    }
+
+    function scrollNextCard() {
+      if (!container || window.innerWidth >= 768 || isUserInteracting) return;
+      const cardWidth = container.firstElementChild.offsetWidth + 14;
+      const maxScroll = container.scrollWidth - container.clientWidth - 10;
+
+      if (container.scrollLeft >= maxScroll) {
+        container.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }
+    }
 
     function startAutoScroll() {
-      if (window.innerWidth >= 640) return;
-      autoScrollTimer = setInterval(() => {
-        if (!container) return;
-        const cardWidth = container.firstElementChild.offsetWidth + 16;
-        if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-          container.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-          container.scrollBy({ left: cardWidth, behavior: 'smooth' });
-        }
-      }, 3000);
+      if (window.innerWidth >= 768) return;
+      stopAutoScroll();
+      autoScrollTimer = setInterval(scrollNextCard, 3500);
     }
 
     function stopAutoScroll() {
-      if (autoScrollTimer) clearInterval(autoScrollTimer);
+      if (autoScrollTimer) {
+        clearInterval(autoScrollTimer);
+        autoScrollTimer = null;
+      }
     }
 
-    startAutoScroll();
+    if (container) {
+      container.addEventListener('scroll', updateActiveDot, { passive: true });
 
-    container.addEventListener('touchstart', stopAutoScroll, { passive: true });
-    container.addEventListener('touchend', () => {
-      stopAutoScroll();
-      startAutoScroll();
-    }, { passive: true });
+      container.addEventListener('touchstart', () => {
+        isUserInteracting = true;
+        stopAutoScroll();
+      }, { passive: true });
+
+      container.addEventListener('touchend', () => {
+        setTimeout(() => {
+          isUserInteracting = false;
+          startAutoScroll();
+        }, 2000);
+      }, { passive: true });
+
+      container.addEventListener('mouseenter', stopAutoScroll);
+      container.addEventListener('mouseleave', startAutoScroll);
+    }
 
     window.addEventListener('resize', () => {
       stopAutoScroll();
       startAutoScroll();
+      updateActiveDot();
     });
+
+    startAutoScroll();
   </script>
 
 </body>
